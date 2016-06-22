@@ -7,16 +7,26 @@
 //  Licensed under the MIT license.
 //
 
-import UIKit
+#if os(iOS) || os(watchOS)
+    import UIKit
+#elseif os(OSX)
+    import Cocoa
+#endif
 
 /// PKHUDCheckmarkView provides an animated success (checkmark) view.
 public class PKHUDSuccessView: PKHUDSquareBaseView, PKHUDAnimating {
     
     var checkmarkShapeLayer: CAShapeLayer = {
-        let checkmarkPath = UIBezierPath()
+        let checkmarkPath = BezierPath()
         checkmarkPath.moveToPoint(CGPointMake(4.0, 27.0))
+        
+        #if os(iOS) || os(watchOS)
         checkmarkPath.addLineToPoint(CGPointMake(34.0, 56.0))
         checkmarkPath.addLineToPoint(CGPointMake(88.0, 0.0))
+        #elseif os(OSX)
+        checkmarkPath.lineToPoint(CGPointMake(34.0, 56.0))
+        checkmarkPath.lineToPoint(CGPointMake(88.0, 0.0))
+        #endif
         
         let layer = CAShapeLayer()
         layer.frame = CGRectMake(3.0, 3.0, 88.0, 56.0)
@@ -25,22 +35,31 @@ public class PKHUDSuccessView: PKHUDSquareBaseView, PKHUDAnimating {
         layer.lineCap     = kCALineCapRound
         layer.lineJoin    = kCALineJoinRound
         layer.fillColor   = nil
-        layer.strokeColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0).CGColor
+        layer.strokeColor = Color(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0).CGColor
         layer.lineWidth   = 6.0
         return layer
     }()
     
     public init(title: String? = nil, subtitle: String? = nil) {
         super.init(title: title, subtitle: subtitle)
-        layer.addSublayer(checkmarkShapeLayer)
-        checkmarkShapeLayer.position = layer.position
+        commonInit()
     }
     
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    public override func commonInit() {
+        #if os(OSX)
+            self.wantsLayer = true  // NSView will create a CALayer automatically
+        #endif
+
+        let layer: CALayer! = self.layer
+
         layer.addSublayer(checkmarkShapeLayer)
-        checkmarkShapeLayer.position = layer.position
+        checkmarkShapeLayer.position = CGPoint(x: layer.frame.width/2, y: layer.frame.height/2)
     }
     
     public func startAnimation() {

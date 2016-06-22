@@ -7,7 +7,11 @@
 //  Licensed under the MIT license.
 //
 
-import UIKit
+#if os(iOS) || os(watchOS)
+    import UIKit
+#elseif os(OSX)
+    import Cocoa
+#endif
 
 /// PKHUDErrorView provides an animated error (cross) view.
 public class PKHUDErrorView: PKHUDSquareBaseView, PKHUDAnimating {
@@ -19,34 +23,49 @@ public class PKHUDErrorView: PKHUDSquareBaseView, PKHUDAnimating {
         let dash = CAShapeLayer()
         dash.frame = CGRectMake(0.0, 0.0, 88.0, 88.0)
         dash.path = {
-            let path = UIBezierPath()
-            path.moveToPoint(CGPointMake(0.0, 44.0))
-            path.addLineToPoint(CGPointMake(88.0, 44.0))
+            #if os(iOS) || os(watchOS)
+                let path = UIBezierPath()
+                path.moveToPoint(CGPointMake(0.0, 44.0))
+                path.addLineToPoint(CGPointMake(88.0, 44.0))
+
+            #elseif os(OSX)
+                let path = NSBezierPath()
+                path.moveToPoint(CGPointMake(0.0, 44.0))
+                path.lineToPoint(CGPointMake(88.0, 44.0))
+            #endif
+                
             return path.CGPath
         }()
         dash.lineCap     = kCALineCapRound
         dash.lineJoin    = kCALineJoinRound
         dash.fillColor   = nil
-        dash.strokeColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0).CGColor
+        dash.strokeColor = Color(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.0).CGColor
         dash.lineWidth   = 6
         dash.fillMode    = kCAFillModeForwards
         return dash
     }
     
-    public init(title: String? = nil, subtitle: String? = nil) {
-        super.init(title: title, subtitle: subtitle)
-        layer.addSublayer(dashOneLayer)
-        layer.addSublayer(dashTwoLayer)
-        dashOneLayer.position = layer.position
-        dashTwoLayer.position = layer.position
+    public init() {
+        super.init(image: nil, title: nil, subtitle: nil)
     }
-
+    
+    public init(title: String?, subtitle: String?) {
+        super.init(title: title, subtitle: subtitle)
+    }
+    
     public required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public override func commonInit() {
+        super.commonInit()
+
+        let layer: CALayer! = self.layer
+
         layer.addSublayer(dashOneLayer)
         layer.addSublayer(dashTwoLayer)
-        dashOneLayer.position = layer.position
-        dashTwoLayer.position = layer.position
+        dashOneLayer.position = CGPoint(x: layer.frame.width/2, y: layer.frame.height/2)
+        dashTwoLayer.position = CGPoint(x: layer.frame.width/2, y: layer.frame.height/2)
     }
     
     func rotationAnimation(angle: CGFloat) -> CABasicAnimation {

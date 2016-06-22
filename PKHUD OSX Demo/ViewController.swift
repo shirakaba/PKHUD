@@ -1,28 +1,21 @@
 //
-//  DemoViewController.swift
-//  PKHUD Demo
+//  ViewController.swift
+//  PKHUD OSX Demo
 //
-//  Created by Philip Kluz on 6/18/14.
-//  Copyright (c) 2016 NSExceptional. All rights reserved.
+//  Created by Fabian Renner on 22.06.16.
+//  Copyright © 2016 NSExceptional. All rights reserved.
 //
 
-import UIKit
-import PKHUD
+import Cocoa
+import PKHUDMACOS
 
-class DemoViewController: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        HUD.allowsInteraction = false
-    }
-
+class ViewController: NSViewController {
     //pure without title and subtitle
     
     @IBAction func showSuccessHUD(sender: AnyObject) {
         HUD.flash(.Success, delay: 2.0)
     }
-    
+
     @IBAction func showErrorHUD(sender: AnyObject) {
         HUD.flash(.Error, delay: 2.0)
     }
@@ -92,23 +85,7 @@ class DemoViewController: UIViewController {
         }
     }
     
-    /*
     
-    Please note that the above demonstrates the "porcelain" interface - a more concise and clean way to work with the HUD.
-    If you need more options and flexbility, feel free to use the underlying "plumbing". E.g.:
-    
-    PKHUD.sharedHUD.show()
-    PKHUD.sharedHUD.contentView = PKHUDSuccessView(title: "Success!", subtitle: nil)
-    PKHUD.sharedHUD.hide(afterDelay: 2.0)
-    */
-    
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.AllButUpsideDown
-    }
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return .LightContent
-    }
     
     func delay(delay:Double, closure:()->()) {
         dispatch_after(
@@ -119,3 +96,4 @@ class DemoViewController: UIViewController {
             dispatch_get_main_queue(), closure)
     }
 }
+

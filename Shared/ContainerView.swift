@@ -6,9 +6,34 @@
 //
 //
 
-import UIKit
+#if os(iOS) || os(watchOS)
+    import UIKit
+#elseif os(OSX)
+    import Cocoa
+#endif
 
-internal class ContainerView: UIView {
+internal class ContainerView: View {
+    
+    #if os(OSX)
+    override internal var flipped:Bool {
+        get {
+            return true
+        }
+    }
+    #endif
+    
+    #if os(OSX)
+    var userInteractionEnabled = false
+    #endif
+    
+    #if os(OSX)
+    override func hitTest(aPoint: NSPoint) -> NSView? {
+        if userInteractionEnabled {
+            return super.hitTest(aPoint)
+        }
+        return nil
+    }
+    #endif
     
     internal let frameView: FrameView
     internal init(frameView: FrameView = FrameView()) {
@@ -24,7 +49,13 @@ internal class ContainerView: UIView {
     }
     
     private func commonInit() {
-        backgroundColor = UIColor.clearColor()
+        #if os(OSX)
+            self.wantsLayer = true  // NSView will create a CALayer automatically
+        #endif
+        
+        let layer: CALayer! = self.layer
+        layer.backgroundColor = Color.clearColor().CGColor
+        
         self.translatesAutoresizingMaskIntoConstraints = false
 
         
@@ -44,8 +75,14 @@ internal class ContainerView: UIView {
     }
     
     internal func showFrameView() {
+        let layer: CALayer! = self.layer
         layer.removeAllAnimations()
-        frameView.alpha = 1.0
+        #if os(iOS) || os(watchOS)
+            frameView.alpha = 1.0
+        #elseif os(OSX)
+            frameView.alphaValue = 1.0
+        #endif
+
         
         let width = NSLayoutConstraint(item: frameView, attribute: .Width, relatedBy: .Equal, toItem: frameView.content, attribute: .Width, multiplier: 1, constant: 0)
         let height = NSLayoutConstraint(item: frameView, attribute: .Height, relatedBy: .Equal, toItem: frameView.content, attribute: .Height, multiplier: 1, constant: 0)
@@ -75,41 +112,89 @@ internal class ContainerView: UIView {
         willHide = true
         
         if anim {
+            #if os(iOS) || os(watchOS)
             UIView.animateWithDuration(0.8, animations: {
                 self.frameView.alpha = 0.0
                 self.hideBackground(animated: false)
                 }, completion: finalize)
+            #elseif os(OSX)
+                NSAnimationContext.runAnimationGroup({ context in
+                        context.duration = 0.8
+                        self.frameView.animator().alphaValue = 0.0
+                        self.hideBackground(animated: false)
+                    },
+                    completionHandler: { finalize(finished: true) })
+            #endif
         } else {
-            self.frameView.alpha = 0.0
+            #if os(iOS) || os(watchOS)
+                frameView.alpha = 0.0
+            #elseif os(OSX)
+                frameView.alphaValue = 0.0
+            #endif
             finalize(finished: true)
         }
     }
     
-    private let backgroundView: UIView = {
-        let view = UIView()
+    private let backgroundView: View = {
+        let view = View()
+        #if os(OSX)
+            view.wantsLayer = true
+        #endif
+    
+        let layer: CALayer! = view.layer
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(white:0.0, alpha:0.25)
-        view.alpha = 0.0
+        layer.backgroundColor = Color(white:0.0, alpha:0.25).CGColor
+        
+        #if os(iOS) || os(watchOS)
+            view.alpha = 0.0
+        #elseif os(OSX)
+            view.alphaValue = 0.0
+        #endif
+            
         return view
     }()
     
     internal func showBackground(animated anim: Bool) {
         if anim {
-            UIView.animateWithDuration(0.175) {
-                self.backgroundView.alpha = 1.0
-            }
+            #if os(iOS) || os(watchOS)
+                UIView.animateWithDuration(0.175) {
+                    self.backgroundView.alpha = 1.0
+                }
+            #elseif os(OSX)
+                NSAnimationContext.runAnimationGroup({ context in
+                        context.duration = 0.175
+                        self.backgroundView.animator().alphaValue = 1.0
+                    },
+                    completionHandler: nil)
+            #endif
         } else {
-            backgroundView.alpha = 1.0
+            #if os(iOS) || os(watchOS)
+                backgroundView.alpha = 1.0
+            #elseif os(OSX)
+                backgroundView.alphaValue = 0.0
+            #endif
         }
     }
     
     internal func hideBackground(animated anim: Bool) {
         if anim {
-            UIView.animateWithDuration(0.65) {
-                self.backgroundView.alpha = 0.0
-            }
+            #if os(iOS) || os(watchOS)
+                UIView.animateWithDuration(0.65) {
+                    self.backgroundView.alpha = 0.0
+                }
+            #elseif os(OSX)
+                NSAnimationContext.runAnimationGroup({ context in
+                        context.duration = 0.65
+                        self.backgroundView.animator().alphaValue = 0.0
+                    },
+                    completionHandler: nil)
+            #endif
         } else {
-            backgroundView.alpha = 0.0
+            #if os(iOS) || os(watchOS)
+                backgroundView.alpha = 0.0
+            #elseif os(OSX)
+                backgroundView.alphaValue = 0.0
+            #endif
         }
     }
 }

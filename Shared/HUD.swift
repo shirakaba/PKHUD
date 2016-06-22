@@ -7,20 +7,24 @@
 //  Licensed under the MIT license.
 //
 
-import UIKit
+#if os(iOS) || os(watchOS)
+    import UIKit
+#elseif os(OSX)
+    import Cocoa
+#endif
 
 public enum HUDContentType {
     case Success
     case Error
     case Progress
-    case Image(UIImage?)
-    case RotatingImage(UIImage?)
+    case Image(Img?)
+    case RotatingImage(Img?)
     
     case LabeledSuccess(title: String?, subtitle: String?)
     case LabeledError(title: String?, subtitle: String?)
     case LabeledProgress(title: String?, subtitle: String?)
-    case LabeledImage(image: UIImage?, title: String?, subtitle: String?)
-    case LabeledRotatingImage(image: UIImage?, title: String?, subtitle: String?)
+    case LabeledImage(image: Img?, title: String?, subtitle: String?)
+    case LabeledRotatingImage(image: Img?, title: String?, subtitle: String?)
     
     case Label(String?)
     case SystemActivity
@@ -42,9 +46,15 @@ public final class HUD {
     public static var isVisible: Bool { return PKHUD.sharedHUD.isVisible }
     
     // MARK: Public methods, PKHUD based
-    public static func show(content: HUDContentType, onView view: UIView? = nil) {
-        PKHUD.sharedHUD.contentView = contentView(content)
-        PKHUD.sharedHUD.show(onView: view)
+    public static func show(content: HUDContentType, onView view: View? = nil) {
+        let hud: PKHUD
+        if let view = view {
+            hud = PKHUD(viewToPresentOn: view)
+        } else {
+            hud = PKHUD.sharedHUD
+        }
+        hud.contentView = contentView(content)
+        hud.show()
     }
     
     public static func hide(completion: (Bool -> Void)? = nil) {
@@ -60,18 +70,18 @@ public final class HUD {
     }
     
     // MARK: Public methods, HUD based
-    public static func flash(content: HUDContentType, onView view: UIView? = nil) {
+    public static func flash(content: HUDContentType, onView view: View? = nil) {
         HUD.show(content, onView: view)
         HUD.hide(animated: true, completion: nil)
     }
     
-    public static func flash(content: HUDContentType, onView view: UIView? = nil, delay: NSTimeInterval, completion: (Bool -> Void)? = nil) {
+    public static func flash(content: HUDContentType, onView view: View? = nil, delay: NSTimeInterval, completion: (Bool -> Void)? = nil) {
         HUD.show(content, onView: view)
         HUD.hide(afterDelay: delay, completion: completion)
     }
     
     // MARK: Private methods
-    private static func contentView(content: HUDContentType) -> UIView {
+    private static func contentView(content: HUDContentType) -> View {
         switch content {
         case .Success:
             return PKHUDSuccessView()
@@ -83,7 +93,6 @@ public final class HUD {
             return PKHUDSquareBaseView(image: image)
         case let .RotatingImage(image):
             return PKHUDRotatingImageView(image: image)
-            
         case let .LabeledSuccess(title, subtitle):
             return PKHUDSuccessView(title: title, subtitle: subtitle)
         case let .LabeledError(title, subtitle):
@@ -94,8 +103,6 @@ public final class HUD {
             return PKHUDSquareBaseView(image: image, title: title, subtitle: subtitle)
         case let .LabeledRotatingImage(image, title, subtitle):
             return PKHUDRotatingImageView(image: image, title: title, subtitle: subtitle)
-            
-            
         case let .Label(text):
             return PKHUDTextView(text: text)
         case .SystemActivity:

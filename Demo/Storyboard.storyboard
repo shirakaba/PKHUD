@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="D2U-NN-2aL">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G7a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="D2U-NN-2aL">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -30,12 +30,12 @@
                                             <constraint firstAttribute="height" constant="44" id="yyh-ba-2Q5"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Animated Success HUD">
+                                        <state key="normal" title="Success">
                                             <color key="titleColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="showAnimatedSuccessHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="k9E-hd-08Z"/>
+                                            <action selector="showSuccessHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="zS1-Ep-K0v"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x5z-e1-I63">
@@ -45,12 +45,12 @@
                                             <constraint firstAttribute="height" constant="44" id="O2F-o7-Xsw"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Animated Error HUD">
+                                        <state key="normal" title="Error">
                                             <color key="titleColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="showAnimatedErrorHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="Cyd-W9-1e2"/>
+                                            <action selector="showErrorHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="Gwv-K8-vlP"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rmq-Eh-KX3">
@@ -60,12 +60,12 @@
                                             <constraint firstAttribute="height" constant="44" id="RY7-k4-4pQ"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Animated Progress HUD">
+                                        <state key="normal" title="Progress">
                                             <color key="titleColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="showAnimatedProgressHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="Vu1-gd-bzp"/>
+                                            <action selector="showProgressHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="cbh-xM-R9K"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X4n-2l-pZk">
@@ -75,12 +75,12 @@
                                             <constraint firstAttribute="height" constant="44" id="kcT-Ut-AmL"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Animated Status Progress HUD">
+                                        <state key="normal" title="Image">
                                             <color key="titleColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="showAnimatedStatusProgressHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="R2f-zr-F2H"/>
+                                            <action selector="showImageHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="sCz-A5-nj8"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NfX-TV-8Iq">
@@ -90,12 +90,12 @@
                                             <constraint firstAttribute="height" constant="44" id="hbA-LY-ItN"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Custom Animated Progress HUD">
+                                        <state key="normal" title="RotatingImage">
                                             <color key="titleColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="showCustomProgressHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="g9n-80-Y6g"/>
+                                            <action selector="showRotatingImageHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="jeL-XE-0n5"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1XL-mO-npD">
@@ -105,12 +105,12 @@
                                             <constraint firstAttribute="height" constant="44" id="uLS-Fh-Fh5"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal" title="Text HUD">
+                                        <state key="normal" title="LabeledSuccess">
                                             <color key="titleColor" white="0.25" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="showTextHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="eJg-na-gUk"/>
+                                            <action selector="showLabeledSuccessHUD:" destination="D2U-NN-2aL" eventType="touchUpInside" id="xzJ-mB-gjS"/>
                                         </connections>
                                     </button>
                                 </subviews>

@@ -7,7 +7,12 @@
 //  Licensed under the MIT license.
 //
 
-import UIKit
+#if os(iOS) || os(watchOS)
+    import UIKit
+#elseif os(OSX)
+    import Cocoa
+#endif
+
 import QuartzCore
 
 /// PKHUDProgressView provides an indeterminate progress view.
@@ -22,7 +27,10 @@ public class PKHUDProgressView: PKHUDSquareBaseView, PKHUDAnimating {
     }
         
     func startAnimation() {
-        imageView.layer.addAnimation(PKHUDAnimation.discreteRotation, forKey: "progressAnimation")
+        let imageViewLayer: CALayer! = imageView.layer
+        imageViewLayer.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        imageViewLayer.position = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
+        imageViewLayer.addAnimation(PKHUDAnimation.discreteRotation, forKey: "progressAnimation")
     }
     
     func stopAnimation() {

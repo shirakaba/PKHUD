@@ -7,15 +7,23 @@
 //  Licensed under the MIT license.
 //
 
-import UIKit
+#if os(iOS) || os(watchOS)
+    import UIKit
+#elseif os(OSX)
+    import Cocoa
+#endif
 
 /// PKHUDWideBaseView provides a wide base view, which you can subclass and add additional views to.
-public class PKHUDWideBaseView: UIView {
+public class PKHUDWideBaseView: View {
     
     static let defaultWideBaseViewFrame = CGRect(origin: CGPointZero, size: CGSize(width: 265.0, height: 90.0))
     
     public init() {
         super.init(frame: PKHUDWideBaseView.defaultWideBaseViewFrame)
+        let width = NSLayoutConstraint(item: self, attribute: .Width, relatedBy: .Equal, toItem: nil, attribute: .Width, multiplier: 1, constant: PKHUDWideBaseView.defaultWideBaseViewFrame.width)
+        let height = NSLayoutConstraint(item: self, attribute: .Height, relatedBy: .Equal, toItem: nil, attribute: .Width, multiplier: 1, constant: PKHUDWideBaseView.defaultWideBaseViewFrame.height)
+        
+        self.addConstraints([width, height])
     }
     
     public override init(frame: CGRect) {
@@ -25,4 +33,10 @@ public class PKHUDWideBaseView: UIView {
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
+    #if os(OSX)
+    public override var allowsVibrancy: Bool {
+        return true
+    }
+    #endif
 }
