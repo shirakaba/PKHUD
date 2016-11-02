@@ -7,7 +7,11 @@
 //  Licensed under the MIT license.
 //
 
-import UIKit
+#if os(iOS) || os(watchOS)
+    import UIKit
+#elseif os(OSX)
+    import Cocoa
+#endif
 
 /// The PKHUD object controls showing and hiding of the HUD, as well as its contents and touch response behavior.
 open class PKHUD: NSObject {
@@ -16,7 +20,7 @@ open class PKHUD: NSObject {
         static let sharedHUD = PKHUD()
     }
     
-    public var viewToPresentOn: UIView? = nil
+    public var viewToPresentOn: View?
 
     fileprivate let container = ContainerView()
     fileprivate var hideTimer: Timer?
@@ -32,10 +36,12 @@ open class PKHUD: NSObject {
     
     public override init () {
         super.init()
+        #if os(iOS) || os(watchOS)
         NotificationCenter.default.addObserver(self,
             selector: #selector(PKHUD.willEnterForeground(_:)),
             name: NSNotification.Name.UIApplicationWillEnterForeground,
             object: nil)
+        #endif
         userInteractionOnUnderlyingViewsEnabled = false
         container.frameView.autoresizingMask = [ .flexibleLeftMargin,
                                                  .flexibleRightMargin,
@@ -43,7 +49,7 @@ open class PKHUD: NSObject {
                                                  .flexibleBottomMargin ]
     }
     
-    public convenience init(viewToPresentOn view: UIView) {
+    public convenience init(viewToPresentOn view: View?) {
         self.init()
         viewToPresentOn = view
     }
@@ -66,7 +72,7 @@ open class PKHUD: NSObject {
         return !container.isHidden
     }
     
-    open var contentView: UIView {
+    open var contentView: View {
         get {
             return container.frameView.content
         }
@@ -76,6 +82,7 @@ open class PKHUD: NSObject {
         }
     }
     
+    #if os(iOS) || os(watchOS)
     open var effect: UIVisualEffect? {
         get {
             return container.frameView.effect
@@ -84,15 +91,26 @@ open class PKHUD: NSObject {
             container.frameView.effect = newValue
         }
     }
+    #endif
     
-    open func show(onView view: UIView? = nil) {
-        let view:UIView = view ?? viewToPresentOn ?? UIApplication.shared.keyWindow!
+    open func show() {
+        #if os(iOS) || os(watchOS)
+        guard let view = viewToPresentOn ?? UIApplication.shared.keyWindow ?? UIApplication.shared.windows.first else {
+            preconditionFailure("HUD has no view to present on")
+        }
+        #elseif os(OSX)
+        guard let view = viewToPresentOn ?? NSApplication.shared().orderedWindows.first?.contentView else {
+            preconditionFailure("HUD has no view to present on")
+        }
+        #endif
         if(!view.subviews.contains(container)) {
             view.addSubview(container)
             container.frame.origin = CGPoint.zero
             container.frame.size = view.frame.size
             container.autoresizingMask = [ .flexibleHeight, .flexibleWidth ]
         }
+
+
         container.showFrameView()
         if dimsBackground {
             container.showBackground(animated: true)
