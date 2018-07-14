@@ -33,7 +33,7 @@ open class PKHUDTextView: PKHUDWideBaseView {
         layoutIfNeeded()
     }
 
-    open override func layoutSubviews() {
+    @objc open override func layoutSubviews() {
         super.layoutSubviews()
 
         let padding: CGFloat = 10.0

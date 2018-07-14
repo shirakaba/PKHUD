@@ -112,7 +112,7 @@ open class PKHUD: NSObject {
             preconditionFailure("HUD has no view to present on")
         }
         #elseif os(OSX)
-        guard let view = viewToPresentOn ?? NSApplication.shared().orderedWindows.first?.contentView else {
+        guard let view = viewToPresentOn ?? NSApplication.shared.orderedWindows.first?.contentView else {
             preconditionFailure("HUD has no view to present on")
         }
         #endif

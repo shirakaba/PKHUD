@@ -136,38 +136,38 @@
             self.layoutSubviews()
         }
         
-        func layoutSubviews() {}
+        @objc func layoutSubviews() {}
     }
     
-    extension NSAutoresizingMaskOptions {
-        static var flexibleLeftMargin: NSAutoresizingMaskOptions {
+extension NSView.AutoresizingMask {
+    static var flexibleLeftMargin: NSView.AutoresizingMask {
             get {
-                return .viewMinXMargin
+                return .minXMargin
             }
         }
-        static var flexibleRightMargin: NSAutoresizingMaskOptions {
+        static var flexibleRightMargin: NSView.AutoresizingMask {
             get {
-                return .viewMaxXMargin
+                return .maxXMargin
             }
         }
-        static var flexibleTopMargin: NSAutoresizingMaskOptions {
+        static var flexibleTopMargin: NSView.AutoresizingMask {
             get {
-                return .viewMinYMargin
+                return .minYMargin
             }
         }
-        static var flexibleBottomMargin: NSAutoresizingMaskOptions {
+        static var flexibleBottomMargin: NSView.AutoresizingMask {
             get {
-                return .viewMaxYMargin
+                return .maxYMargin
             }
         }
-        static var flexibleHeight: NSAutoresizingMaskOptions {
+        static var flexibleHeight: NSView.AutoresizingMask {
             get {
-                return .viewHeightSizable
+                return .height
             }
         }
-        static var flexibleWidth: NSAutoresizingMaskOptions {
+        static var flexibleWidth: NSView.AutoresizingMask {
             get {
-                return .viewWidthSizable
+                return .width
             }
         }
     }
@@ -248,7 +248,7 @@
             super.init(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
             
             self.wantsLayer = true
-            self.style = .spinningStyle
+            self.style = .spinning
         }
         
         public required init?(coder: NSCoder) {
@@ -289,7 +289,7 @@
         init(effect: BlurEffect) {
             super.init(frame: NSRect.zero)
             
-            let material: NSVisualEffectMaterial
+            let material: NSVisualEffectView.Material
             if case .dark = effect.style {
                 material = .dark
             } else {
@@ -300,7 +300,7 @@
             self.blendingMode = .withinWindow
 
             if #available(macOS 10.12, *) {
-                self.appearance = NSAppearance(named: NSAppearanceNameVibrantLight)
+                self.appearance = NSAppearance(named: NSAppearance.Name.vibrantLight)
             }
         }
         

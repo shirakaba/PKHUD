@@ -85,7 +85,7 @@ open class PKHUDSquareBaseView: View {
     }
     #endif
     
-    open override func layoutSubviews() {
+    @objc open override func layoutSubviews() {
         super.layoutSubviews()
 
         let viewWidth = bounds.size.width
