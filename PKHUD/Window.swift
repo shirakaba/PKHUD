@@ -116,10 +116,12 @@ internal class ContainerView: View {
                 self.backgroundView.alpha = 1.0
             })
             #elseif os(OSX)
-            NSAnimationContext.runAnimationGroup({ context in
-                context.duration = 0.175
-                self.backgroundView.animator().alphaValue = 1.0
-            })
+            NSAnimationContext.beginGrouping()
+
+            NSAnimationContext.current.duration = 0.175
+            self.backgroundView.animator().alphaValue = 1.0
+
+            NSAnimationContext.endGrouping()
             #endif
         } else {
             backgroundView.alpha = 1.0
@@ -133,10 +135,12 @@ internal class ContainerView: View {
                 self.backgroundView.alpha = 0.0
             })
             #elseif os(OSX)
-            NSAnimationContext.runAnimationGroup({ context in
-                context.duration = 0.65
-                self.backgroundView.animator().alphaValue = 0.0
-            })
+            NSAnimationContext.beginGrouping()
+
+            NSAnimationContext.current.duration = 0.65
+            self.backgroundView.animator().alphaValue = 0.0
+
+            NSAnimationContext.endGrouping()
             #endif
         } else {
             backgroundView.alpha = 0.0
