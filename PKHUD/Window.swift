@@ -57,6 +57,10 @@ internal class ContainerView: View {
         frameView.center = center
         backgroundView.frame = bounds
     }
+    override func mouseDown(with event: NSEvent) {
+        guard !self.userInteractionEnabled else { return }
+        super.mouseDown(with: event) // Lets the touch go through
+    }
     #endif
 
     internal func showFrameView() {
