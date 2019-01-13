@@ -31,13 +31,13 @@ extension NSBezierPath {
                 let pathType = self.element(at: index, associatedPoints: points)
 
                 switch pathType {
-                case .moveToBezierPathElement:
+                case .moveTo:
                     path.move(to: CGPoint(x: points[0].x, y: points[0].y))
-                case .lineToBezierPathElement:
+                case .lineTo:
                     path.addLine(to: CGPoint(x: points[0].x, y: points[0].y))
-                case .curveToBezierPathElement:
+                case .curveTo:
                     path.addCurve(to: CGPoint(x: points[0].x, y: points[0].y), control1: CGPoint(x: points[1].x, y: points[1].y), control2: CGPoint(x: points[2].x, y: points[2].y))
-                case .closePathBezierPathElement:
+                case .closePath:
                     path.closeSubpath()
                 }
             }

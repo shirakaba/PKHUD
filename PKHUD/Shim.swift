@@ -177,7 +177,7 @@
             set {
                 switch newValue {
                 case .center:
-                    self.layer?.contentsGravity = kCAGravityCenter
+                    self.layer?.contentsGravity = CALayerContentsGravity.center
                 default:
                     break
                 }
