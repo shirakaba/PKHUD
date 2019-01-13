@@ -41,7 +41,7 @@ public final class PKHUDSystemActivityIndicatorView: PKHUDSquareBaseView, PKHUDA
     }
 
     let activityIndicatorView: ActivityIndicatorView = {
-        let activity = ActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let activity = ActivityIndicatorView(style: .whiteLarge)
         activity.color = Color.black
         return activity
     }()
