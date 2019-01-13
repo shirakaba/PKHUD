@@ -41,7 +41,11 @@ public final class PKHUDSystemActivityIndicatorView: PKHUDSquareBaseView, PKHUDA
     }
 
     let activityIndicatorView: ActivityIndicatorView = {
+        #if os(iOS) || os(watchOS)
+        let activity = ActivityIndicatorView(style: UIActivityIndicatorView.Style.whiteLarge)
+        #elseif os(OSX)
         let activity = ActivityIndicatorView(activityIndicatorStyle: NSActivityIndicatorViewStyle.whiteLarge)
+        #endif
         activity.color = Color.black
         return activity
     }()
